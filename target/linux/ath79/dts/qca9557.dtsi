@@ -178,13 +178,31 @@
 			};
 		};
 
+		nand: nand@1b800200 {
+			compatible = "qca,ar934x-nand";
+			reg = <0x1b800200 0xb8>;
+
+			interrupts = <21>;
+			interrupt-parent = <&miscintc>;
+
+			resets = <&rst 14>;
+			reset-names = "nand";
+
+			nand-ecc-mode = "hw";
+
+			#address-cells = <1>;
+			#size-cells = <0>;
+
+			status = "disabled";
+		};
+
 		gmac: gmac@18070000 {
 			compatible = "qca,qca9550-gmac";
 			reg = <0x18070000 0x58>;
 		};
 
 		pcie0: pcie-controller@180c0000 {
-			compatible = "qcom,ar7240-pci";
+			compatible = "qcom,qca9550-pci", "qcom,ar7240-pci";
 			#address-cells = <3>;
 			#size-cells = <2>;
 			bus-range = <0x0 0x0>;
@@ -196,6 +214,9 @@
 				  0x1000000 0 0x00000000 0x0000000 0 0x000001>;		/* io space */
 			interrupt-parent = <&intc2>;
 			interrupts = <1>;
+
+			resets = <&rst 6>, <&rst 7>;
+			reset-names = "hc", "phy";
 
 			interrupt-controller;
 			#interrupt-cells = <1>;
@@ -216,7 +237,7 @@
 		};
 
 		pcie1: pcie-controller@18250000 {
-			compatible = "qcom,ar7240-pci";
+			compatible = "qcom,qca9550-pci", "qcom,ar7240-pci";
 			#address-cells = <3>;
 			#size-cells = <2>;
 			bus-range = <0x0 0x0>;
@@ -228,6 +249,9 @@
 				  0x1000000 0 0x00000000 0x0000001 0 0x000001>;		/* io space */
 			interrupt-parent = <&intc3>;
 			interrupts = <0>;
+
+			resets = <&rst2 6>, <&rst2 7>;
+			reset-names = "hc", "phy";
 
 			interrupt-controller;
 			#interrupt-cells = <1>;
@@ -271,14 +295,13 @@
 			phys = <&usb_phy1>;
 
 			status = "disabled";
-	};
+		};
 
 		spi: spi@1f000000 {
-			compatible = "qca,ar9557-spi", "qca,ar7100-spi";
-			reg = <0x1f000000 0x10>;
+			compatible = "qca,ar934x-spi";
+			reg = <0x1f000000 0x1c>;
 
 			clocks = <&pll ATH79_CLK_AHB>;
-			clock-names = "ahb";
 
 			status = "disabled";
 
